@@ -1,0 +1,14 @@
+{
+	"error": "Hata",
+	"notFound": "Bulunamadı.",
+	"title": "FriendSake - Sosyal Arkadaş Gruplandırma Aracı",
+	"welcome": "FriendSake'e hoşgeldiniz!",
+	"description": "Arkadaşlarınızı adlarına göre gruplandırın.",
+	"signIn": "Facebook ile giriş",
+	"legal": "FriendSake açık kaynak kodludur; sizin adınıza paylaşımda bulunmayacağımıza ve bizimle paylaştığınız verileri spam amaçlı kullanmayacağımıza söz veriyoruz.",
+	"share": "Paylaş",
+	"onlyOne": "Bir Taneler",
+	"shareMsg": "Arkadaşlarının adlarını eğlenceli görsellerle paylaşmak istiyorsan buraya tıkla!",
+	"meme": "Caps Yap!",
+  "modal-title": "İşte caps'iniz..."
+}

@@ -1,0 +1,16 @@
+{
+  "name": "friendsake",
+  "version": "0.0.1",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.3",
+    "bootstrap": "^3.3.6",
+    "jquery_lazyload": "jquery.lazyload#^1.9.7",
+    "font-awesome": "fontawesome#^4.6.3",
+    "page": "visionmedia/page.js#^1.7.1"
+  }
+}

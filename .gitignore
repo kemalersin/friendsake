@@ -1,0 +1,6 @@
+node_modules/
+models/data/
+public/components
+.idea/
+.env
+.sass-cache

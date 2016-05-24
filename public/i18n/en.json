@@ -1,0 +1,14 @@
+{
+  "error": "Error",
+  "notFound": "Not found.",
+  "title": "FriendSake - Social Namesake Grouping Tool",
+  "welcome": "Welcome to FriendSake!",
+  "description": "A tool for social friend grouping.",
+  "signIn": "Sign in with Facebook",
+  "legal": "FriendSake açık kaynak kodludur; sizin adınıza paylaşımda bulunmayacağımıza ve bizimle paylaştığınız verileri spam amaçlı kullanmayacağımıza söz veriyoruz.",
+  "share": "Share",
+  "onlyOne": "Only One",
+  "shareMsg": "Arkadaşlarının adlarını eğlenceli görsellerle paylaşmak istiyorsan buraya tıkla!",
+  "meme": "Generate Meme!",
+  "modal-title": "Here is your meme..."
+}

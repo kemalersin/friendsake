@@ -1,0 +1,72 @@
+doctype html5
+html(lang= getLocale())
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+
+    block meta
+
+    title= __('title')
+
+    if ENV_DEVELOPMENT
+      link(rel='stylesheet', href='/css/bootstrap.min.css')
+      link(rel='stylesheet', href='/components/font-awesome/css/font-awesome.min.css')
+      link(rel='stylesheet', href='/components/bootstrap-social/bootstrap-social.css')
+    else
+      link(rel='stylesheet', href='https://bootswatch.com/superhero/bootstrap.min.css')
+      link(rel='stylesheet', href='https://rawgit.com/lipis/bootstrap-social/gh-pages/bootstrap-social.css')
+
+    link(rel='stylesheet', href='/css/style.css')
+
+    if ENV_DEVELOPMENT
+      script(src='http://localhost:35729/livereload.js')
+      script(src='/components/jquery/dist/jquery.min.js')
+      script(src='/components/page/page.js')
+      script(src='/components/jquery_lazyload/jquery.lazyload.js')
+      script(src='/components/bootstrap/dist/js/bootstrap.min.js')
+    else
+      script(src='https://use.fontawesome.com/182cf59ec1.js')
+      script(src='https://code.jquery.com/jquery-2.2.3.min.js')
+      script(src='https://rawgit.com/visionmedia/page.js/master/page.js')
+      script(src='https://rawgit.com/tuupola/jquery_lazyload/master/jquery.lazyload.min.js')
+      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+
+    script(src='https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js')
+  body
+    div.spinner.sk-wandering-cubes
+      div.sk-cube.sk-cube1
+      div.sk-cube.sk-cube2
+
+    div.content.container.collapse
+      div.row
+        div.col-md-12.text-center
+          a(href='/')
+            img.img-responsive(
+              src='https://api.icons8.com/download/21ffa0e85e48c1ebaa667e04261cb0d5e3555d9b/Color/PNG/144/Very_Basic/share-144.png',
+              width='144',
+              height='144'
+              alt='FriendSake',
+              data-toggle='tooltip'
+              data-placement='top'
+              title='FriendSake'
+            )
+      div.row
+        div.col-xs-12.col-sm-10.col-sm-offset-1
+          block content
+          div.row
+
+            div.col-md-12.text-center.github-buttons
+              a(href='https://github.com/kemalersin/friendsake')
+                img(src='https://img.shields.io/github/watchers/kemalersin/friendsake.svg?style=social')
+              a(href='https://github.com/kemalersin/friendsake')
+                img(src='https://img.shields.io/github/stars/kemalersin/friendsake.svg?style=social')
+              a(href='https://github.com/kemalersin/friendsake/fork')
+                img(src='https://img.shields.io/github/forks/kemalersin/friendsake.svg?style=social')
+            div.col-xs-12.text-center
+              .fb-share-button(
+                data-href= url || '/',
+                data-layout='button_count',
+                data-mobile-iframe='true'
+              )
+    block js
+      script(src='/js/app.js')

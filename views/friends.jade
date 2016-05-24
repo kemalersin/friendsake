@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  div.row
+    div.col-md-12.text-center
+      h1.header
+        big FriendSake
+    div.col-md-12.text-right
+      div#fb-root
+      a.btn.btn-default(
+        href='#share',
+        data-toggle='modal'
+      )
+        i.fa.fa-lg.fa-picture-o
+        | &nbsp; #{__('meme')}
+    div.col-md-12.friend-list
+
+  #share.modal.fade
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header
+          button.close(
+            type='button',
+            data-dismiss='modal',
+            aria-hidden='true'
+          ) ×
+          h4.modal-title= __('modal-title')
+        .modal-body
+          .row
+            .col-md-12.text-center
+              a.btn.btn-default.btn-share
+                i.fa.fa-lg.fa-share-alt
+                | &nbsp; #{__('share')}
+            .col-md-12.text-center
+              img.img-responsive(
+                width=800,
+                height=600
+              )
