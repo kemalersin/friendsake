@@ -65,7 +65,7 @@ module.exports = {
         });
       },
       function (uid, title, description) {
-        var url = 'http://i.imgflip.com/' + (
+        var url = 'https://i.imgflip.com/' + (
             uid ? uid : defaultId
           ) + '.jpg';
 
