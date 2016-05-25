@@ -13,7 +13,7 @@
     $.get(ctx.path + '/list', function (data) {
       if (data) {
         var image = new Image();
-        image.src = data.image;
+        image.src = data.info.image;
 
         image.onload = function () {
           var $share = $('#share');
@@ -33,14 +33,14 @@
           }
         });
 
-        data.friends.forEach(function (grouped) {
+        data.friends.forEach(function (friends) {
           var $grouped = $(
             '<div class="row well grouped"><div class="col-md-12"><h3>' +
-            grouped.name + ' (' + grouped.users.length + ')' +
+            friends.name + ' (' + friends.users.length + ')' +
             '</h3></div></div>'
           ).appendTo($('.friend-list'));
 
-          grouped.users.forEach(function (user) {
+          friends.users.forEach(function (user) {
             $grouped.append(
               '<div class="col-xs-3 col-sm-2 col-md-1 text-center">' +
               ' <img class="avatar lazy img-circle"' +

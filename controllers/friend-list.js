@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-var async = require('async');
 var request = require('request');
 var random = require('randomstring');
 
@@ -11,19 +10,61 @@ var generator = require('../helpers/image-generator');
 router.get('/:provider/friends/list', function (req, res, next) {
   var provider = _.lowerCase(req.params.provider);
 
-  var sendFriends = function (url, parse) {
-    request(url, function (error, response, body) {
-      var friends = [];
+  var fnGenerate = function (friends, history, user) {
+    return function (info) {
+      history.image = info.image;
+      history.title = info.title;
+      history.description = info.description;
+
+      user.save();
+
+      res.json({
+        info: info,
+        friends: friends,
+        url: req.protocol +
+        '://' + req.headers.host +
+        '/' + provider +
+        '/profile/' + req.user[provider].id +
+        '?uid=' + (req.session.uid = random.generate(8))
+      });
+    }
+  }
+
+  var fnUser = function (friends) {
+    return function (err, user) {
+      var mostCommon = _.head(friends);
+
+      var i = user.history.push({
+        uid: req.session.uid,
+        provider: provider,
+        name: mostCommon.name,
+        number: _.size(mostCommon.users),
+        createdAt: _.now()
+      });
+
+      var history = user.history[--i];
+
+      generator.generate(
+        history.name,
+        history.number,
+        fnGenerate(friends, history, user)
+      );
+    }
+  }
+
+  var fnResponse = function (parse) {
+    return function (error, response, body) {
+      var result = [];
 
       if (!error && response.statusCode == 200) {
         var obj = JSON.parse(body);
 
         if (obj) {
-          friends = parse(obj);
+          result = parse(obj);
         }
       }
 
-      var grouped = _.chain(friends)
+      var grouped = _.chain(result)
         .sortBy(function (friend) {
           return _.chain(friend.name).lowerCase().deburr();
         })
@@ -43,7 +84,7 @@ router.get('/:provider/friends/list', function (req, res, next) {
         return _.size(obj.users) === 1;
       });
 
-      var result = _.concat(
+      var friends = _.concat(
         _.difference(grouped, singletons),
         [{
           name: __('onlyOne'),
@@ -53,42 +94,12 @@ router.get('/:provider/friends/list', function (req, res, next) {
         }]
       );
 
-      req.session.uid = random.generate(8);
+      User.findById(req.user.id, fnUser(friends));
+    }
+  }
 
-      User.findById(req.user.id, function (err, user) {
-        var mostCommon = _.head(result);
-
-        var i = user.history.push({
-          uid: req.session.uid,
-          provider: provider,
-          name: mostCommon.name,
-          number: _.size(mostCommon.users),
-          createdAt: _.now()
-        });
-
-        var history = user.history[--i];
-
-        generator.generate(history.name, history.number, function (image, title, description) {
-          history.image = image;
-          history.title = title;
-          history.description = description;
-
-          user.save();
-
-          res.json({
-            friends: result,
-            image: image,
-            title: title,
-            description: description,
-            url: req.protocol +
-              '://' + req.headers.host +
-              '/' + provider +
-              '/profile/' + req.user[provider].id +
-              '?uid=' + req.session.uid
-          });
-        });
-      });
-    });
+  var sendFriends = function (url, parse) {
+    request(url, fnResponse(parse));
   }
 
   var sendFBFriends = function () {
