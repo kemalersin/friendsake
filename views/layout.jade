@@ -8,30 +8,32 @@ html(lang= getLocale())
 
     title= __('title')
 
-    if ENV_DEVELOPMENT
-      link(rel='stylesheet', href='/css/bootstrap.min.css')
-      link(rel='stylesheet', href='/components/font-awesome/css/font-awesome.min.css')
-      link(rel='stylesheet', href='/components/bootstrap-social/bootstrap-social.css')
-    else
-      link(rel='stylesheet', href='https://bootswatch.com/superhero/bootstrap.min.css')
-      link(rel='stylesheet', href='https://rawgit.com/lipis/bootstrap-social/gh-pages/bootstrap-social.css')
+    block css
+      if ENV_DEVELOPMENT
+        link(rel='stylesheet', href='/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/components/font-awesome/css/font-awesome.min.css')
+        link(rel='stylesheet', href='/components/bootstrap-social/bootstrap-social.css')
+      else
+        link(rel='stylesheet', href='https://bootswatch.com/superhero/bootstrap.min.css')
+        link(rel='stylesheet', href='https://rawgit.com/lipis/bootstrap-social/gh-pages/bootstrap-social.css')
 
-    link(rel='stylesheet', href='/css/style.css')
+      link(rel='stylesheet', href='/css/style.css')
+      
+    block script
+      if ENV_DEVELOPMENT
+        script(src='http://localhost:35729/livereload.js')
+        script(src='/components/jquery/dist/jquery.min.js')
+        script(src='/components/page/page.js')
+        script(src='/components/jquery_lazyload/jquery.lazyload.js')
+        script(src='/components/bootstrap/dist/js/bootstrap.min.js')
+      else
+        script(src='https://use.fontawesome.com/182cf59ec1.js')
+        script(src='https://code.jquery.com/jquery-2.2.3.min.js')
+        script(src='https://rawgit.com/visionmedia/page.js/master/page.js')
+        script(src='https://rawgit.com/tuupola/jquery_lazyload/master/jquery.lazyload.min.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
 
-    if ENV_DEVELOPMENT
-      script(src='http://localhost:35729/livereload.js')
-      script(src='/components/jquery/dist/jquery.min.js')
-      script(src='/components/page/page.js')
-      script(src='/components/jquery_lazyload/jquery.lazyload.js')
-      script(src='/components/bootstrap/dist/js/bootstrap.min.js')
-    else
-      script(src='https://use.fontawesome.com/182cf59ec1.js')
-      script(src='https://code.jquery.com/jquery-2.2.3.min.js')
-      script(src='https://rawgit.com/visionmedia/page.js/master/page.js')
-      script(src='https://rawgit.com/tuupola/jquery_lazyload/master/jquery.lazyload.min.js')
-      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
-
-    script(src='https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js')
+      script(src='https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js')
   body
     div.spinner.sk-wandering-cubes
       div.sk-cube.sk-cube1
