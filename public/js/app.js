@@ -1,5 +1,14 @@
 (function () {
   var init = function (ctx, next) {
+    WebFont.load({
+      google: {
+        families: [
+          'Fira+Sans::latin,latin-ext',
+          'Lora:700italic:latin,latin-ext'
+        ]
+      }
+    });
+
     $('.spinner').hide();
     $('.content').show();
 
@@ -59,15 +68,6 @@
       page.redirect('/');
     });
   }
-
-  WebFont.load({
-    google: {
-      families: [
-        'Fira+Sans::latin,latin-ext',
-        'Lora:700italic:latin,latin-ext'
-      ]
-    }
-  });
 
   if (window.location.hash == '#_=_') {
     history.replaceState
