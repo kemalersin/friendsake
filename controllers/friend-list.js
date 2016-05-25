@@ -10,6 +10,8 @@ var generator = require('../helpers/image-generator');
 router.get('/:provider/friends/list', function (req, res, next) {
   var provider = _.lowerCase(req.params.provider);
 
+  req.session.uid = random.generate(8);
+
   var fnGenerate = function (friends, history, user) {
     return function (info) {
       history.image = info.image;
@@ -25,7 +27,7 @@ router.get('/:provider/friends/list', function (req, res, next) {
         '://' + req.headers.host +
         '/' + provider +
         '/profile/' + req.user[provider].id +
-        '?uid=' + (req.session.uid = random.generate(8))
+        '?uid=' + req.session.uid
       });
     }
   }
