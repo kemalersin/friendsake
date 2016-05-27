@@ -485,4 +485,17 @@ Sevgiler.
 
 Kemal E. Yılmaz
 
-**[E-Posta](mailto://mail@kemalersin.com)** | **[Facebook](https://www.facebook.com/kemalersinyilmaz)** | **[Twitter](https://twitter.com/kemal_ersin)** | **[Linkedin](https://www.linkedin.com/in/kemal-e-yılmaz-a00447120)** | **[GitHub](https://github.com/kemalersin)**
+[![alt text][1.1]][1]
+[![alt text][2.1]][2]
+[![alt text][3.1]][3]
+[![alt text][4.1]][4]
+
+[1.1]: https://maxcdn.icons8.com/Android_L/PNG/24/Social_Networks/twitter-24.png (Twitter)
+[2.1]: https://maxcdn.icons8.com/Android_L/PNG/24/Social_Networks/facebook-24.png (Facebook)
+[3.1]: https://maxcdn.icons8.com/Android_L/PNG/24/Social_Networks/google_plus-24.png (Google Plus)
+[4.1]: https://maxcdn.icons8.com/Android_L/PNG/24/Social_Networks/linkedin-24.png (LinkedIn)
+
+[1]: http://twitter.com/kemal_ersin
+[2]: http://www.facebook.com/kemalersinyilmaz
+[3]: http://plus.google.com/u/0/106180819527051679686
+[4]: http://www.linkedin.com/in/kemal-e-yılmaz-a00447120
