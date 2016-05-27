@@ -29,8 +29,8 @@ Bu belgede, Friendsake tarzı bir uygulama geliştirmek için kullanılması ger
 2. [ImgFlip Meme Generator API](https://api.imgflip.com)
 
 #### Servisler
-1. [Heroku](http://www.heroku.com) (PaaS olarak, uygulamayı host etmek için)
-2. [mLab](https://mlab.com) (DaaS olarak, veritabanını host etmek için)
+1. [Heroku](http://www.heroku.com) (*PaaS olarak, uygulamayı host etmek için*)
+2. [mLab](https://mlab.com) (*DaaS olarak, veritabanını host etmek için*)
 
 #### Araçlar
 1. [NVM](https://github.com/creationix/nvm) (1.1.0 - *Node.js kurulumu ve versiyon yönetimi için*)
