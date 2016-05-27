@@ -55,15 +55,15 @@ Bu belgede, Friendsake tarzı bir uygulama geliştirmek için kullanılması ger
 ---
 
 ## Hazırlık
-##### 1. Geliştirici Hesabının Ayarlanması
+#### 1. Geliştirici Hesabının Ayarlanması
 Friendsake gibi kullanıcıların Facebook ile giriş yapabildikleri, izinler doğrultusunda kullanıcının Facebook profil bilgileri ve arkadaş listeleri gibi verilerine erişebilen uygulamaların önce Facebook'a tanımlanması gerekmektedir. Bunu [Facebook Developer]((https://developers.facebook.com)) web sitesinde yapabilirsiniz. Kayıt işlemini gerçekleştirirken uygulamanın isim alanını, varsa site adresini ve çalışacağı alan adlarını belirtmek önemlidir. Uygulamayı genel kullanıma açana kadar sadece kendi yerel sunucunuzda çalıştırabileceğinizi de unutmayın. Facebook, uygulamayı tanımladığınızda size bir uygulama kodu (**APP ID**) ve uygulama gizi (**APP KEY**) verir. Bunları uygulamayı geliştirirken kullanacaksınız.
 
-##### 2. Web Servislerinin Ayarlanması
+#### 2. Web Servislerinin Ayarlanması
 Ben uygulamayı çevrimiçi kullanıma açmak için **PaaS** (Platform as a Service) olarak **[Heroku](http://www.heroku.com)**'yu tercih ettim. Düşük erişim ve kullanım oranlarına sahip uygulamalar için Heroku'nun ücretsiz katmanı rahatlıkla kullanılabilir. Uygulamanıza olan talep artarsa farklı bir fiyatlandırma katmanına geçerek uygulamayı ölçeklendirip artan taleplere yanıt verecek şekilde uygulamanızın performansını arttırabilirsiniz. Yerel sunucumuzdaki dosyaların Heroku üzerinde yayınlayabilmek için birazdan bahsedeceğim **[Heroku Toolbet](https://toolbelt.heroku.com)** denilen araç setini kullanıyoruz.
 
 Friendsake'te veritabanı sunucusu olarak **MongoDB** kullandım. Verileri saklamak için, en azından development ve test ortamında **SQLite** da kullanılabilir ancak ben hepsinde Mongo'yu tercih ettim. Tabii çevrimiçi olarak kullanılan bir uygulamanın veritabanı da çevrimiçi olmalı; bu amaçla DaaS (Database as a Service) olarak **[mLab](https://mlab.com)**'te ücretsiz bir veritabanı oluşturdum (ücretsiz veritabanının boyutu en fazla `500 MB` olabiliyor; bununla birlikte Heroku'da olduğu gibi ücretli ölçeklendirme seçeneklerine sahipsiniz).
 
-##### 3. Geliştirme Ortamının Hazırlanması
+#### 3. Geliştirme Ortamının Hazırlanması
 Node.js'i kendi web sitesinden indirerek kurabileceğiniz gibi kurulumu Node.js için geliştirilmiş **[NVM](https://github.com/creationix/nvm)** adlı araç yardımıyla da yapabilirsiniz. Bu aracın en güzel yanı, aynı geliştirme ortamına birden çok Node.js versiyonunu yükleyip sistem genelinde, oturum boyunca ya da sadece geliştirdiğiniz uygulama içinde istediğiniz versiyonu kullanabilmenizi sağlaması.
 
 NVM'i yükledikten sonra, bu araç yardımıyla komut satırından istediğimiz Node.js versiyonunu indirip ayarlıyoruz (her şey birkaç basit komutla halledilebildiği için burada ayrıntıya girmeyeceğim). Tekrarlamak gerekise, NVM'e uygulamanızın hangi Node.js versiyonuyla çalışacağını bile belirtebilirsiniz.
