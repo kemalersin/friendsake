@@ -38,7 +38,11 @@ module.exports = function(passport) {
           user.facebook.gender = profile.gender;
           user.facebook.givenName = profile.name.givenName;
           user.facebook.familyName = profile.name.familyName;
-          user.facebook.email = (profile.emails[0].value || '').toLowerCase();
+
+          user.facebook.email = (
+            !_.isUndefined(profile.emails) && _.size(profile.emails) !== 0 ?
+              profile.emails[0].value : ''
+          ).toLowerCase();
 
           user.save(function(err) {
             if (err) {

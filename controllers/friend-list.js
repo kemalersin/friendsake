@@ -66,6 +66,11 @@ router.get('/:provider/friends/list', function (req, res, next) {
         }
       }
 
+      if (_.size(result) === 0) {
+        res.send(404);
+        return;
+      }
+
       var grouped = _.chain(result)
         .sortBy(function (friend) {
           return _.chain(friend.name).lowerCase().deburr();
