@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Friendsake by kemalersin</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Friendsake</h1>
+          <h2>Sosyal Arkadaş Gruplandırma Aracı</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/kemalersin/friendsake/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/kemalersin/friendsake/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/kemalersin/friendsake" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h2>
+<a id="giriş" class="anchor" href="#giri%C5%9F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Giriş</h2>
+
+<p><a href="https://friendsake.herokuapp.com">https://friendsake.herokuapp.com</a></p>
+
+<p><strong>Friendsake</strong>, sosyal ağlardaki arkadaş listelerinizi analiz ederek hangi adda kaç arkadaşınız olduğunu eğlenceli görseller eşliğinde gösterip paylaşmanızı sağlayan bir web uygulamasıdır.</p>
+
+<p>Uygulama şu <strong>Facebook</strong> gönderisinde bahsedilen gereksinime yanıt vermesi amacıyla geliştirilmiştir:</p>
+
+<p><a href="https://www.facebook.com/kaplanseren/posts/10153615718557263">https://www.facebook.com/kaplanseren/posts/10153615718557263</a></p>
+
+<p>Gönderi sahibi her ne kadar sonradan adlarına göre arkadaşları gruplandırmanın çok zor bir iş olmadığını belirtmiş olsa da bunu hızlı ve düzenli bir şekilde yapacak bir uygulamanın olmaması beni Friendsake'i geliştirmeye yöneltmiştir. Bununla birlikte bu benim <strong>Node.js</strong>, <strong>Express</strong> ve <strong>MongoDB</strong> kullanarak geliştirdiğim ilk Facebook uygulaması.</p>
+
+<p>Arkadaşları adlarına göre gruplandıracak bir uygulama geliştirme fikri ilk kez aklıma geldiğinde bunun bir günde halledilebilecek bir iş olduğunu düşündüm; amacım aynı gün içinde basit bir uygulama hazırlayıp yukarıda bahsettiğim gönderinin altında paylaşmaktı. İşin içine girince, teorik düzeydeki Node.js ve Express bilgimin pratikte ilk uygulamamı bu kadar hızlı bir şekilde hazırlamama yetecek düzeyde olmadığını fark ettim. Bu nedenle kendime bir çalışma takvimi hazırlayıp her gün yaklaşık 1 saatlik bir çalışmayla, bir yandan kodları da kendimce en iyi duruma getirerek ancak 8 günün sonunda uygulamayı hazır hale getirebildim.</p>
+
+<p>Bu basit proje bana çok şey kattı; şu anda bile Node.js ile ilgili bilmediğim sayısız şey olduğunun farkındayım ancak en azından Express ve MongoDB ile sıfırdan bir sosyal ağ uygulamasının nasıl geliştirileceğine dair kafamda bir fikir oluştu diyebilirim.</p>
+
+<p>Friendsake, ben bunları yazarken sadece Facebook ile entegre çalışıyor; bununla birlikte projenin kod alt yapısı <strong>Twitter</strong>, <strong>Google+</strong>, <strong>Linkedin</strong> gibi API desteği sağlayan ve bu arayüzlerle uygulama geliştirilmesine izin veren diğer servislere de entegre olabilecek şekilde inşa edildi.</p>
+
+<p>Bu belgede, Friendsake tarzı bir uygulama geliştirmek için kullanılması gereken teknolojileri, izlenebilecek yönergeleri ve Node.js geliştiricilerin çoğunluğu tarafından onaylanan best practice'leri kısaca anlatmaya çalışacağım. Friendsake kodlarını istediğiniz gibi değiştirebilir ve dağıtabilirsiniz. Umarım paylaşacağım bilgiler bunu yapmanızı kolaylaştırır.</p>
+
+<hr>
+
+<h2>
+<a id="teknoloji" class="anchor" href="#teknoloji" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Teknoloji</h2>
+
+<h4>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API</h4>
+
+<ol>
+<li><a href="https://developers.facebook.com">Facebook Developers</a></li>
+<li><a href="https://api.imgflip.com">ImgFlip Meme Generator API</a></li>
+</ol>
+
+<h4>
+<a id="servisler" class="anchor" href="#servisler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Servisler</h4>
+
+<ol>
+<li>
+<a href="http://www.heroku.com">Heroku</a> (PaaS olarak, uygulamayı host etmek için)</li>
+<li>
+<a href="https://mlab.com">mLab</a> (DaaS olarak, veritabanını host etmek için)</li>
+</ol>
+
+<h4>
+<a id="araçlar" class="anchor" href="#ara%C3%A7lar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Araçlar</h4>
+
+<ol>
+<li>
+<a href="https://github.com/creationix/nvm">NVM</a> (1.1.0 - <em>Node.js kurulumu ve versiyon yönetimi için</em>)</li>
+<li>
+<a href="https://www.npmjs.com">NPM</a> (3.8.6 - <em>Node.js paketlerinin yüklenmesi ve yönetimi için</em>)</li>
+<li>
+<a href="http://yeoman.io">Yeoman</a> (1.8.1 - <em>Uygulama çatısının oluşturulması için</em>)</li>
+<li>
+<a href="http://bower.io">Bower</a> (1.7.9 - <em>Uygulamada kullanılan front-end bağımlılıklarının yüklenmesi için</em>)</li>
+<li>
+<a href="http://gulpjs.com">Gulp</a> (3.9.1 - <em>Uygulamanın derlenip çalışmaya hazır hale getirilmesi için</em>)</li>
+<li>
+<a href="https://toolbelt.heroku.com">Heroku Toolbet</a> (3.43.2 - <em>Deploy işlemleri ve production environment ayarlamaları için</em>)</li>
+</ol>
+
+<h4>
+<a id="veritabanı" class="anchor" href="#veritaban%C4%B1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Veritabanı</h4>
+
+<ol>
+<li>
+<a href="https://www.mongodb.com/download-center#community">MongoDB Community Server</a> (3.2.6 - <em>Veritabanı yönetimi için</em>)</li>
+</ol>
+
+<h4>
+<a id="back-end" class="anchor" href="#back-end" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Back-End</h4>
+
+<ol>
+<li>
+<a href="https://nodejs.org">Node.js</a> (6.1.0 - <em>Sunucu taraflı geliştirme için</em>)</li>
+<li>
+<a href="http://expressjs.com">Express</a> (4.13.3 - <em>İstemci taleplerini işlemek için</em>)</li>
+<li>
+<a href="http://mongoosejs.com">Mongoose</a> (4.4.17 - <em>Veritabanı işlemleri için</em>)</li>
+</ol>
+
+<h4>
+<a id="front-end" class="anchor" href="#front-end" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Front-End</h4>
+
+<ol>
+<li>
+<a href="http://getbootstrap.com">Bootstrap</a> (3.3.6 - <em>İstemci arayüzü için</em>)</li>
+<li>
+<a href="https://jquery.com">JQuery</a> (2.2.3 - <em>İstemci taraflı geliştirme için</em>)</li>
+</ol>
+
+<hr>
+
+<h2>
+<a id="hazırlık" class="anchor" href="#haz%C4%B1rl%C4%B1k" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hazırlık</h2>
+
+<h5>
+<a id="1-geliştirici-hesabının-ayarlanması" class="anchor" href="#1-geli%C5%9Ftirici-hesab%C4%B1n%C4%B1n-ayarlanmas%C4%B1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Geliştirici Hesabının Ayarlanması</h5>
+
+<p>Friendsake gibi kullanıcıların Facebook ile giriş yapabildikleri, izinler doğrultusunda kullanıcının Facebook profil bilgileri ve arkadaş listeleri gibi verilerine erişebilen uygulamaların önce Facebook'a tanımlanması gerekmektedir. Bunu Facebook Developer web sitesinde yapabilirsiniz. Kayıt işlemini gerçekleştirirken uygulamanın isim alanını, varsa site adresini ve çalışacağı alan adlarını belirtmek önemlidir. Uygulamayı genel kullanıma açana kadar sadece kendi yerel sunucunuzda çalıştırabileceğinizi de unutmayın. Facebook, uygulamayı tanımladığınızda size bir uygulama kodu (<strong>APP ID</strong>) ve uygulama gizi (<strong>APP KEY</strong>) verir. Bunları uygulamayı geliştirirken kullanacaksınız.</p>
+
+<h5>
+<a id="2-web-servislerinin-ayarlanması" class="anchor" href="#2-web-servislerinin-ayarlanmas%C4%B1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Web Servislerinin Ayarlanması</h5>
+
+<p>Ben uygulamayı çevrimiçi kullanıma açmak için <strong>PaaS</strong> (Platform as a Service) olarak <strong><a href="http://www.heroku.com">Heroku</a></strong>'yu tercih ettim. Düşük erişim ve kullanım oranlarına sahip uygulamalar için Heroku'nun ücretsiz katmanı rahatlıkla kullanılabilir. Uygulamanıza olan talep artarsa farklı bir fiyatlandırma katmanına geçerek uygulamayı ölçeklendirip artan taleplere yanıt verecek şekilde uygulamanızın performansını arttırabilirsiniz. Yerel sunucumuzdaki dosyaların Heroku üzerinde yayınlayabilmek için birazdan bahsedeceğim <strong><a href="https://toolbelt.heroku.com">Heroku Toolbet</a></strong> denilen araç setini kullanıyoruz.</p>
+
+<p>Friendsake'te veritabanı sunucusu olarak <strong>MongoDB</strong> kullandım. Verileri saklamak için, en azından development ve test ortamında <strong>SQLite</strong> da kullanılabilir ancak ben hepsinde Mongo'yu tercih ettim. Tabii çevrimiçi olarak kullanılan bir uygulamanın veritabanı da çevrimiçi olmalı; bu amaçla DaaS (Database as a Service) olarak <strong><a href="https://mlab.com">mLab</a></strong>'te ücretsiz bir veritabanı oluşturdum (ücretsiz veritabanının boyutu en fazla <code>500 MB</code> olabiliyor; bununla birlikte Heroku'da olduğu gibi ücretli ölçeklendirme seçeneklerine sahipsiniz).</p>
+
+<h5>
+<a id="3-geliştirme-ortamının-hazırlanması" class="anchor" href="#3-geli%C5%9Ftirme-ortam%C4%B1n%C4%B1n-haz%C4%B1rlanmas%C4%B1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Geliştirme Ortamının Hazırlanması</h5>
+
+<p>Node.js'i kendi web sitesinden indirerek kurabileceğiniz gibi kurulumu Node.js için geliştirilmiş <strong><a href="https://github.com/creationix/nvm">NVM</a></strong> adlı araç yardımıyla da yapabilirsiniz. Bu aracın en güzel yanı, aynı geliştirme ortamına birden çok Node.js versiyonunu yükleyip sistem genelinde, oturum boyunca ya da sadece geliştirdiğiniz uygulama içinde istediğiniz versiyonu kullanabilmenizi sağlaması.</p>
+
+<p>NVM'i yükledikten sonra, bu araç yardımıyla komut satırından istediğimiz Node.js versiyonunu indirip ayarlıyoruz (her şey birkaç basit komutla halledilebildiği için burada ayrıntıya girmeyeceğim). Tekrarlamak gerekise, NVM'e uygulamanızın hangi Node.js versiyonuyla çalışacağını bile belirtebilirsiniz.</p>
+
+<p>Node.js paketlerini indirmek ve yönetmek için <strong><a href="https://www.npmjs.com">NPM</a></strong>'i kullanıyorum. Sonraki aşamada gerekecek web geliştirme çatısını da NPM ile indireceğiz. Friendsake'in uygulama çatısını  <strong><a href="http://yeoman.io">Yeoman</a></strong> ile oluşturdum. Yeoman'i yüklemek için aşağıdaki komutu vermeniz yeterli:</p>
+
+<p><code>npm install -g yo</code></p>
+
+<p>Friendsake, Express çatısıyla geliştirildi (üzerinde birkaç değişiklik yapmış olsam da best practice dışına çıkmadım). Çatıyı oluşturmak için gereken "generator" paketini aşağıdaki komutla indirip global olarak ayarlamak gerekiyor (kullanabileceğiniz diğer çatılar için Yeoman web sitesine göz atabilirsiniz):</p>
+
+<p><code>npm install -g generator-express</code></p>
+
+<p>Çeşitli görevlerle proje dosyalarını derleyip uygulamamızı çalıştırmamızı sağlayan <strong><a href="http://gulpjs.com">Gulp</a></strong> paketi de bu çatıyla birlikte yükleniyor; ben Friendsake'te Gulp kullanmış olsam da siz çatıyı oluştururken dilerseniz Gulp yerine <strong><a href="http://gruntjs.com">Grunt</a></strong>'ı da seçebilirsiniz.</p>
+
+<p>Projelerimizde kullanacağımız, <strong><a href="http://getbootstrap.com">Bootstrap</a></strong>, <strong><a href="https://jquery.com">JQuery</a></strong> gibi statik kütüphaneleri, geliştirme kitlerini, kaynak dosyalarını ve istemci taraflı diğer araçları <strong><a href="http://bower.io">Bower</a></strong> adlı komut satırı uygulamasıyla indirip bağımlılık olarak projemize ekliyoruz. Express çatısıyla projemize Node.js modülü olarak eklenen Bower'ın global kurulumunu aşağıdaki komutla gerçekleştirebilirsiniz :</p>
+
+<p><code>npm install -g bower</code></p>
+
+<p>Benim Friendsake'te yaptığım gibi geliştirme ortamında da veritabanı olarak MongoDB kullanacaksanız sisteminize <strong><a href="https://www.mongodb.com/download-center#community">MongoDB Community Server</a></strong> yüklemeniz gerekiyor (bilgisayarınıza MongoDB sunucusu kurmak yerine, development ve test için de yukarıda bahsettiğim mLab gibi DaaS hizmetlerini kullanabilirsiniz ancak ben bunu pek önermiyorum; projeyi test ederken her zaman çevrimiçi olamayabileceğinizi de unutmayın).</p>
+
+<p>MongoDB sunucusunu yükleyip Mongo servisini çalıştırdıktan sonra küçük bir komut satırı aracını kullanarak veritabanınızı yönetebilir, CRUD ve sorgulama işlemleri yapabilirsiniz. Birazdan "Geliştirme" kısmında bahsedeceğim gibi, uygulamamız çalıştığında veritabanı ve koleksiyonlar fiziksel olarak mevcut değilse, projede belirttiğimiz şemalara göre bunlar çalışma anında otomatik olarak oluşturuluyor.</p>
+
+<p>Son olarak uygulamayı Heroku'da yayınlamakta kullanacağımız araç setine gereksinimimiz var. Geliştirme ortamınıza <strong>Git</strong> versiyon takip sistemini ve Heroku istemcisini kuracak olan <strong><a href="https://toolbelt.heroku.com">Heroku Toolbet</a></strong> adındaki bu uygulama paketini
+kendi web sitesinden indirip yükleyebilirsiniz.</p>
+
+<hr>
+
+<h2>
+<a id="geliştirme" class="anchor" href="#geli%C5%9Ftirme" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Geliştirme</h2>
+
+<h4>
+<a id="1-kurulum" class="anchor" href="#1-kurulum" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Kurulum</h4>
+
+<p>Node.js ve Express ile web uygulaması geliştirmeye projemiz için oluşturduğumuz klasörde bir terminal penceresi açıp aşağıdaki komutu vererek başlıyoruz:</p>
+
+<p><code>yo express</code></p>
+
+<p>Bu komutla Yeoman'e Express çatısını kullanarak yeni bir proje başlatmak istediğimizi söylüyoruz. Daha önce Express çatısı için gerekli olan generator modülünü indirip geliştirme ortamımıza tanıttığımızı unutmayalım. Komutu verdikten sonra, Yeoman proje için gereken ilk ayarları yapmak amacıyla bize bir dizi soru yöneltiyor. Bulunduğumuz konumda proje için yeni bir dizin oluşturmak isteyip istemediğimizi, projede <strong>MVC</strong> mimarisi kullanıp kullanmayacağımızı, MVC kullanacaksak hangi view engine'i tercih ettiğimizi belirtip, kullanmak istediğimiz <strong>CSS</strong> ön işleyiciyi, veritabanını ve derleme aracını seçtikten sonra Yeoman'in projeyi oluşturarak projenin bağımlılıklarını indirmesini bekliyoruz. Çatının kurulumu tamamlandığında, en temel haliyle bir Express projesine sahip olacağız.</p>
+
+<p>Yeoman ile Friendsake'in çatısını oluştururken view engine olarak <strong><a href="http://jade-lang.com">Jade</a></strong>'i, CSS ön işleyicisi olarak <strong><a href="https://github.com/sass/node-sass">Node-Sass</a></strong>'i, derleme aracı olarak da daha önce belirttiğim gibi Gulp'u tercih ettim. Jade (yeni adıyla <strong><a href="https://github.com/pugjs/pug">Pug</a></strong>), "<em>whitespace sensitive</em>" bir template engine; kodlama noktasında klasik HTML'den farklı bir yaklaşımı var. "<em>Indentation</em>" zorunlu kodlamaya aşina değilseniz Jade ile view kodlarken başta zorluk çekebilirsiniz ancak template'inizin ne kadar temiz ve düzenli olduğunu görüp etiketleri girintilerle açıp kapatmaya ve CSS seçicilerini kullanmaya alışınca Jade'ten vazgeçmek istemeyeceğinizi düşünüyorum.</p>
+
+<p>CSS ön işleyicisi olarak Node-Sass kullanmamın nedeniyse, Sass'in <strong>Ruby</strong> bağımlılığı; kendi sistemimde, özellikle <strong>Windows</strong> ortamında Node.js projelerini çalıştırmak için ayrıca Ruby yüklemekten kaçınıyorum ama sizin geliştirme ortamınızda Ruby yüklenip ayarlanmışsa, Sass dosyalarını işleyip CSS haline getirmek için Node-Sass yüklemenize gerek yok.</p>
+
+<p>Çatınızı oluştururken benim Friendsake'te yaptığım gibi Gulp'u tercih ettiğinizde, Gulp ve araçları development bağımlılığı olarak "<code>package.json</code>" dosyanıza eklenir, uygulamayı çalıştırmak için gereken tüm komutlar "<code>gulpfile.js</code>" dosyasında tanımlanır (Gulp ayrıca, projedeki değişiklikleri izleyen çeşitli watcher'lar da sağlamaktadır; bu sayede uygulamanız çalışırken kodlarda bir değişiklik yaparsanız, değişikliklerin etkili olabilmesi için web sunucunuzu yeniden başlatmanıza gerek kalmaz, öyle ki Sass dosyalarınız bile anında CSS haline getirilir).</p>
+
+<p>Çatınızın kurulumu tamamlandıktan sonra uygulamanızı çalıştırmak için aşağıdaki komutu vermeniz yeterlidir:</p>
+
+<p><code>gulp</code></p>
+
+<p>Bu basit adımları takip ederek, <code>3000</code> portundan erişilebilen bir web sunucusuna ve bu sunucu üzerinde çalışan bir Express uygulamasına sahip oldunuz; web tarayıcınızı açıp "<code>http://localhost:3000</code>" adresine gittiğinizde uygulamanızın sizi karşıladığını görebilirsiniz. Tabii çalışan bir web çatısına sahip olmak, her şeyin bittiği anlamına gelmiyor. Daha yüklenmesi gereken modüller, ayarlaması gereken route'lar, yazılması gereken controller'lar var.</p>
+
+<p>Kodlamaya geçmeden önce iyi bir alışkanlık olarak Git repository'sini oluşturmak gerekiyor. Bunun için terminal ekranında sırasıyla aşağıdaki komutları girebilirsiniz:</p>
+
+<p><code>git init</code></p>
+
+<p><code>git add .</code></p>
+
+<p><code>git commit -m "İlk commit."</code></p>
+
+<p>Böylece Git veritabanımızı oluşturup projemizdeki tüm dosyaları bu veritabanına ekledik ve "<code>commit</code>" ederek dosyaların o an "<strong>staging area</strong>" denilen bölgede bulunan durumunu kayıt altına aldık. Commit ettiğimiz tüm değişiklikler adımız ve e-posta adresimizle saklanıyor (Heroku Toolbelt kurduktan sonra Git ayarlarını yaptığınızı farz ediyorum).</p>
+
+<p>Uygulamamızı Heroku'ya deploy edeceğiz. Bu nedenle repo'muzu oluşturduktan sonra aşağıdaki komutu vererek Heroku üzerinde yeni bir uygulama oluşturuyoruz:</p>
+
+<p><code>heroku create</code></p>
+
+<p>Bu işlemin sonucunda, Heroku bize aşağıdakine benzer bir URL ve Git adresi veriyor:</p>
+
+<p><code>https://infinite-journey-28664.herokuapp.com/ | https://git.heroku.com/infinite-journey-28664.git</code></p>
+
+<p>Heroku tarafından sağlanan Git adresini deploy işlemi için remote olarak Git repository'mize eklemeliyiz:</p>
+
+<p><code>heroku git:remote -a infinite-journey-28664</code></p>
+
+<p>Projemiz şu anda Heroku'ya deploy edilebilir durumda olmalı. Uygulamayı, yukarıdaki URL üzerinden erişip çalıştırabilmek için dosyaları Heroku sunucusuna <code>push</code> etmemiz yeterli. Tabii öncesinde birkaç küçük ayar ve isteğe bağlı olarak bazı düzenlemeler yapmamız gerekiyor ki bunları birazdan ele alacağız.</p>
+
+<h4>
+<a id="2-düzenleme" class="anchor" href="#2-d%C3%BCzenleme" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Düzenleme</h4>
+
+<p>Yeoman ile bir Express çatısı kurulumu yaptığınızda, proje klasörünüzde aşağıdaki gibi bir dosya ağacı oluşur:</p>
+
+<pre><code>app
+  controllers
+    home.js
+  models
+    article.js
+  views
+    error.jade
+    index.jade
+    layout.jade
+config
+  config.js
+  express.js
+node_modules
+  ... Node.js modülleri
+public
+  components
+    ...
+  css
+    style.scss
+  img
+    ...
+  js
+    ...
+.bowerrc
+.editorconfig
+.gitignore
+app.js
+bower.json
+gulpfile.js
+package.json
+</code></pre>
+
+<p>Bu son derece düzenli bir yapı ve Node.js best practice'lerine de uyuyor ancak ben Friendsake'te <code>app</code> klasörünün içindekileri root dizinine taşıyarak işe başladım. Siz böyle yapmak zorunda değilsiniz; aksine, MVC yapınızı <code>app.js</code> ile aynı adı taşıyan bir dizin altında konuşlandırmak gayet yerinde bir yaklaşım olacaktır.</p>
+
+<p>Friendsake'in web arayüzünü <strong>Bootstrap</strong> ve <strong>JQuery</strong> ile hazırladım. Projenize bunun gibi  statik kütüphaneleri <strong>Bower</strong> aracılığıyla ekliyorsunuz. Örneğin Bootstrap'in son sürümünü (ya da versiyon numarası belirterek istediğiniz bir sürümü) indirip <code>public\components</code> altına kopyaladıktan sonra <code>bower.json</code> dosyasında kayıt altına almak için şu komutu vermeniz yeterli:</p>
+
+<p><code>bower install bootstrap --save</code></p>
+
+<p><code>public\components</code> klasörü <code>.gitignore</code> dosyası sayesinde gözardı edilerek sunucuya push edilmiyor; bu nedenle statik kütüphenelerin deploy sırasında Heroku tarafından indirilmesi için, yukarıdaki gibi <code>save</code> anahtarını kullanarak, bileşeni bağımlılık olarak projemize eklemiş oluyoruz. Tabii Heroku'ya bağımlılıkları nasıl indirip ayarlayacağını da bildirmemiz gerekiyor. Bunun için <code>package.json</code> dosyasındaki <code>scripts</code> kısmına aşağıdaki anahtar, değer çiftini eklemeliyiz:</p>
+
+<p><code>"postinstall": "./node_modules/bower/bin/bower install"</code></p>
+
+<p><em>(Yukarıdaki gibi Bower binary'sinin tam yolunu yazmak yerine, artık <code>bower install</code> yazmanın yeterli olduğu söylense de ben bundan sonuç alamadım.)</em></p>
+
+<p>Projemizi Heroku'ya push etmeden önce son olarak <code>package.json</code> dosyasına aşağıdaki değerleri girmemiz gerekiyor:</p>
+
+<pre><code>"engines": {
+  "node": "6.1.0"
+}
+</code></pre>
+
+<p>Bu sayede Heroku'ya, uygulamayı hangi engine ile çalıştıracağını söylüyoruz. Artık projemizi deploy edebiliriz. Yapmamız gereken tek şey, <strong><a href="https://github.com">GitHub</a></strong> ve <strong><a href="https://bitbucket.org">Bitbucket</a></strong> gibi servisleri kullananların alışık olduğu standart <code>remote push</code> komutunu vermek:</p>
+
+<p><code>git push heroku master</code></p>
+
+<p>Bu komutla birlikte projemiz Heroku'daki master branch'e push edilip aynı zamanda production deploy işlemi gerçekleştirilir. İşlem başarıyla sonuçlanmışsa, daha önce Heroku'nun bize verdiği URL'den ya da terminale <code>heroku open</code> yazarak uygulamamıza erişebiliriz; tüm ayarları doğru yapmışsak, web tarayıcımızdan sayfanın adresini çağırdığımız anda bize ayrılan web sunucusu başlatılarak uygulamamız çalıştırılacaktır.</p>
+
+<h4>
+<a id="3-güvenlik" class="anchor" href="#3-g%C3%BCvenlik" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Güvenlik</h4>
+
+<p>Friendsake gibi açık kaynaklı projeleri GitHub ya da benzeri  platformlarda yayınlayanlar için üzerinde durulması gereken en önemli nokta, uygulama anahtarlarının ve veritabanı parolaların güvenliğinin nasıl sağlanacağıdır. Açık bir şekilde bunları "public" olarak push etmemeniz gerekiyor; bu konuda benim izlediğim yöntem, parolaları ve anahtarları "<strong>ENVIRONMENT VARIABLE</strong>", yani ortam değişkeni olarak ayarlayıp geliştirme ortamının dışına çıkmasını engellemek. Bunu yapmak için <strong><a href="https://github.com/motdotla/dotenv">dotenv</a></strong> adında bir Node.js modülü kullanıyorum. Modülü projenizin bağımlılıklarına eklemek için aşağıdaki komutu vermeniz yeterli:</p>
+
+<p><code>npm install dotenv --save</code></p>
+
+<p>dotenv yüklendikten sonra projenizin root dizininde "<code>.env</code>" adında bir dosya oluşturup ortam değişkenlerinizi bu dosyanın içinde ayarlayabilirsiniz. Friendsake'te public ortamlardan sakladığım, <code>SSH_SECRET</code> ve API erişimi için kullanılan birkaç anahtar var. Bunların, gizlenmeye gerek olmayan birkaç değişkenle birlikte tamamı aşağıdaki gibi <code>.env</code> dosyasında kayıtlı:</p>
+
+<pre><code>PORT=3000
+DEV_MONGODB=mongodb://localhost/friendsake-development
+TEST_MONGODB=mongodb://localhost/friendsake-test
+
+SSH_SECRET=Gizli_anahtar
+
+IMGFLIP_USERNAME=ImgFlip_KullaniciAdi
+IMGFLIP_PASSWORD=ImgFlip_Parolasi
+
+FB_APP_ID=Facebook_UygulamaKodu
+FB_APP_KEY=Facebook_UygulamaGizi
+FB_CALLBACK_URL=Facebook_DonusAdresi
+</code></pre>
+
+<p><strong>Not: <code>.env</code> dosyasını <code>.gitignore</code> içine ekleyip Git tarafından takip edilmemesini sağlamalısınız; dosyanın GitHub'a ya da herhangi bir public ortama push edilmesini istemiyoruz.</strong></p>
+
+<p>dotenv, production ortamında değişkenleri <code>.env</code> dosyasından okumuyor; ortam değişkenlerimizi tek tek Heroku'ya eklememiz gerekecek. Bu amaçla, terminal üzerinde her değişken için aşağıdakine benzer bir komut çalıştırmalıyız (<code>PORT</code> değişkeni varsayılan olarak Heroku'da ayarlanmış durumda olduğundan bu değişkeni eklemenize gerek yoktur):</p>
+
+<p><code>heroku config:set SSH_SECRET=123</code></p>
+
+<p><strong>Not: Yukarıda <code>.env</code> dosyasında tuttuğum değişkenlere ek olarak "<code>PROD_MONGODB</code>" adında, mLab'te tuttuğum production veritabanına ait sunucu adresini içeren bir ortam değişkeni daha kullanıyorum (sunucu adresi, aynı zamanda veritabanı bağlantı dizesi olarak da kullanıldığından kullanıcı adı ve parola içerebiliyor); bu değişkeni dosyaya ekleme gereği duymadım ancak <code>heroku config:set</code> komutuyla değişkeni Heroku'ya tanıtmayı ihmal etmedim.</strong></p>
+
+<p>Ortam değişkenlerine uygulama içinden erişmek için dotenv modülünü aşağıdaki gibi kullanabiliriz:</p>
+
+<p><code>require('dotenv').config();</code></p>
+
+<p>Herhangi bir ortam değişkenini okumak içinse (örneğimizde <code>SSH_SECRET</code>);</p>
+
+<p><code>var secret = process.env.SSH_SECRET;</code></p>
+
+<h4>
+<a id="4-kodlama-back-end" class="anchor" href="#4-kodlama-back-end" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>4. Kodlama (Back-End)</h4>
+
+<p>Friendsake, MVC mimarisiyle geliştirilen bir web uygulaması. Veritabanımızı açıkça modelleyip, kendi tanımladığımız route'lar üzerinden erişilen kısımları template'ler aracılığıyla render edip istemciye gönderiyoruz. Friendsake projesinin root dizininde <code>controllers</code>, <code>models</code> ve <code>views</code> klasörleriyle kurduğum bu yapıya ek olarak çeşitli modül yapılandırmalarını içeren <code>config</code> ve kendi yazdığım yardımcı modülleri yerleştirdiğim <code>helpers</code> adlarında iki klasörüm daha var. Ana dizindeki ayar dosyalarıyla birlikte projenin back-end kısmı bu şekilde özetlenebilir. İstemciye gönderilen statik dosyalarsa <code>public</code> klasöründe tutuluyor ki bunlar da Jade tarafından render edilen HTML içeriğiyle birlikte uygulamanın front-end kısmını oluşturuyor.</p>
+
+<p>Friendsake'in, Express çatısıyla birlikte yüklenip ayarlanan modüllere ek olarak, benim eklediğim birkaç modüle daha gereksinimi var. Bunların en önemlilerini, işlevleriyle birlikte aşağıdaki gibi sıralayabiliriz:</p>
+
+<ul>
+<li>
+<p><strong><a href="https://github.com/mashpie/i18n-node">i18n</a> (Yerelleştirme)</strong></p>
+
+<p>i18n modülünü yerelleştirme için kullanıyorum. Bu belge yazılırken, Friendsake'in <strong>Türkçe</strong> ve <strong>İngilizce</strong> olmak üzere iki dil için desteği bulunuyor. Modülü projenize bağımlılık olarak eklemek için aşağıdaki komutu vermeniz yeterli:</p>
+
+<p><code>npm install i18n --save</code></p>
+
+<p>Ben uygulamanın birçok yerinde kullandığım için  i18n'i <code>app.js</code> dosyasında şu şekilde ayarlayıp "global" olarak register ettim:</p>
+
+<pre><code>i18n.configure({
+  defaultLocale: 'en',
+  directory: config.root + '/public/i18n',
+  register: global
+});
+</code></pre>
+
+<p>Bu tanımdan da anlayabileceğiniz gibi i18n yerelleştirme dosyaları <code>public\i18n</code> dizininde duruyor ve varsayılan dil olarak İngilizce bekleniyor. Bununla birlikte, ziyaretçinin işletim sisteminde ya da web tarayıcısında ayarlı dile uygun içeriği göndermek için <code>config\express.js</code> dosyasına bir "middleware" ekledim:</p>
+
+<pre><code>app.use(function (req, res, next) {
+  var Negotiator = require('negotiator');
+  var lang = new Negotiator(req).language();
+
+  i18n.setLocale(lang);
+
+  next();
+});
+</code></pre>
+
+<p><strong>Not: <a href="https://github.com/jshttp/negotiator">negotiator</a> bileşenini, HTTP üst bilgilerini okumak için kullanabilirsiniz. Bu örnekte, istemcinin tercih ettiği dilin "en" ya da "tr-TR" benzeri kısa kodunu alıyoruz.</strong></p>
+
+<p>Uygulamanın varsayılan dili belirtilip, işleyici de uygulama düzeyinde global olarak ayarlandığı için, istediğim herhangi bir modül içinde aşağıdaki gibi bir sözdizimi kullanabiliyorum:</p>
+
+<p><code>__('Welcome to Friendsake!')</code></p>
+
+<p>Uygulama çalıştırıldığında i18n, <code>public\i18n</code> dizinindeki varsayılan ve tercih edilen dil dosyalarının içine bakacak, <code>Welcome to Friendsake.</code> ifadesini bulamazsa bu ifade için şunun gibi bir anahtar, değer çifti oluşturacaktır:</p>
+
+<p><code>"Welcome to Friendsake!": "Welcome to Friendsake!"</code></p>
+
+<p>Ayrıca dil dosyaları yoksa, bu dosyalar da otomatik olarak i18n tarafından oluşturulur (farklı bir dosya biçimi belirtmediğiniz sürece dil dosyaları <code>JSON</code> biçimindedir). Türkçe dil desteği için <code>tr-TR</code> dosyasını açıp anahtarı aşağıdaki gibi ayarlayabilirsiniz:</p>
+
+<p><code>"Welcome to Friendsake!": "Friendsake'e hoşgeldiniz!"</code></p>
+
+<p><code>Welcome to Friendsake!</code> ifadesini projenin her yerinde uzun uzun yazmak istemiyorsanız dil dosyasındaki anahtar tanımınız için bir kısaltma belirleyip kodun içinde bu kısaltmayı da kullanmanız mümkündür. Bu kullanımı bir örnekle pekiştirelim:</p>
+
+<p><code>pub\i18n\en.json</code></p>
+
+<pre><code>{
+  "welcome": "Welcome to FriendSake!"
+}
+</code></pre>
+
+<p><code>pub\i18n\tr-TR.json</code></p>
+
+<pre><code>{
+  "welcome": "Friendsake'e hoşgeldiniz!"
+}
+</code></pre>
+
+<p><code>views\index.jade</code></p>
+
+<pre><code>h1.header= __('welcome')
+</code></pre>
+</li>
+<li>
+<p><strong><a href="https://lodash.com">Lodash</a> (Kolaylaştırma)</strong></p>
+
+<p>Lodash, <strong><a href="http://underscorejs.org">Underscore</a></strong> gibi hem sunucu hem de istemci tarafında kullanılabilen bir JavaScript kütüphanesi. İçinde <code>Array</code>, <code>Collection</code>, <code>Date</code>, <code>Number</code>, <code>Object</code> ve <code>String</code> işlemleri için birçok yardımcı metod bulunuyor. Friendsake'i geliştirirken bu kütüphaneyi sık sık kullansam da, Lodash proje içinde en çok Facebook'tan çekilen arkadaş listesini ada göre gruplandırıp sıralamam gerektiğinde işime yaradı:</p>
+
+<p><code>controllers\friend-list.js</code></p>
+
+<pre><code>var grouped = _.chain(result)
+  .sortBy(function (friend) {
+    return _.chain(friend.name).lowerCase().deburr();
+  })
+  .groupBy(function (friend) {
+    return _.chain(friend.name).words().head();
+  })
+  .toPairs()
+  .map(function (friend) {
+    return _.zipObject(['name', 'users'], friend);
+  })
+  .sortBy(function (obj) {
+    return -obj.users.length;
+  })
+  .value();
+</code></pre>
+
+<p>Bu blok sayesinde, <code>result</code> içinde tutulan arkadaş listesini tek seferde gruplandırıp sıralayabiliyoruz. Yukarıda belirttiğim gibi, çok kullandığım için Lodash'i uygulama genelinde global olarak tanımlamayı ve "<code>_</code>" adında bir değişkende saklamayı uygun gördüm. Bunu da <code>app.js</code> içinde şu şekilde yaptım:</p>
+
+<p><code>global._ = require('lodash');</code></p>
+
+<p><strong>Not: Yeri gelmişken, Node.js'te değişkenleri global olarak tanımlamanın pek önerilmediğini, bunun yerine ilgili modülü kullanacağımız dosyada import etmenin daha çok benimsendiğini belirtelim.</strong></p>
+</li>
+<li>
+<p><strong><a href="http://passportjs.org">Passport</a> (Yetkilendirme)</strong></p>
+
+<p>Bu middleware'i kullanıcının Facebook ile giriş yapmasını ve uygulamayı yetkilendirmesini sağlamak için kullanıyoruz. Passport ile ilgili tüm ayarlamalar <code>config\passport.js</code> dosyasında yapılıyor. Passport'ün 300'den fazla giriş yönteminde kullanılabilecek bir "strategy" arabirimi var. Friendsake'te Facebook strategy'sini kullandım. Passport'ü ve ilgili strategy'yi uygulama bağımlılıklarına eklemek için terminal ekranında sırasıyla aşağıdaki komutları vermemiz gerekiyor:</p>
+
+<p><code>npm install passport --save</code></p>
+
+<p><code>npm install passport-facebook --save</code></p>
+
+<p>Passport'ü ve stratejimizi <code>config\passport.js</code> dosyasında ayarlarken giriş yapan kullanıcının profil bilgilerini <code>models\user.js</code> dosyasındaki <strong><a href="http://mongoosejs.com">Mongoose</a></strong> şemamızda tanımlandığı şekliyle MongoDB veritabanımızdaki <code>users</code> koleksiyonumuza ekliyoruz. Ayrıca, middleware'imizi kullanarak istemcinin her talebinde istediğimiz kullanıcı bilgilerini "Request" değişkeni üzerinden controller'larımıza taşıyabiliriz. Bunu sağlayan da son adımda, aşağıdaki blok:</p>
+
+<p><code>config\passport.js</code></p>
+
+<pre><code>passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, {
+      id: user.id,
+      facebook: user.facebook
+    });
+  });
+});
+</code></pre>
+
+<p>Middleware'i <code>controllers\auth.js</code> controller'ı içinde, <code>passport</code> modülüyle import edip yetkilendirme için belirlediğimiz router'larla kullandığımızı görebilirsiniz. <code>auth.js</code> içindeki ilk router, Facebook yetkilendirme ekranı için, ikinci router ise bu ekrandan dönülecek adres için tanımlanmış durumda; yetkilendirmede bir sorunla karşılaşılırsa ya da kullanıcı uygulamamıza yetki vermezse uygulamanın ana sayfasına dönülüyor.</p>
+
+<p>Passport'ün kullanımıyla ilgili daha detaylı bilgi almak için projenin kendi sayfasını ziyaret edebilirsiniz.</p>
+</li>
+</ul>
+
+<hr>
+
+<p>Şimdilik Friendsake'in back-end kodlamasıyla ilgili üzerinde duracağımız son konu, uygulamanın <strong><a href="https://imgflip.com">ImgFlip</a></strong> sitesi aracılığıyla nasıl görsel üretebildiği. ImgFlip, "meme" (bizdeki adıyla "caps") sitesi olmakla birlikte kendi görsellerimizi hazırlayabilmemiz için çeşitli araçlar sağlıyor; bir kullanıcı hesabı oluşturduktan sonra, ister sitedeki hazır şablonları kullanarak, ister resim dosyası yükleyip düzenleyerek basit görseller hazırlayabiliyoruz. Ayrıca ImgFlip'in bu iş için bir de <strong><a href="https://api.imgflip.com">API erişimi</a></strong> bulunuyor ki ben de Friendsake'te REST tabanlı bu JSON arabirimi kullandım zaten.</p>
+
+<p>ImgFlip görsellerini, <code>helpers\image-generator.js</code> modülü aracılığıyla üretiyoruz. Görsel üretmek için birkaç şablon tanımlayıp MongoDB veritabanındaki <code>templates</code> koleksiyonuna kaydettim. <code>models\template.js</code> Mongoose şemasında görebileceğiniz gibi, koleksiyonda şablonun ImgFlip tarafından sağlanan <code>id</code>'sini ve görsellere uygun düşecek şekilde düşünülüp yerelleştirilmiş <code>title</code> ve <code>description</code> tanımlarını tutuyoruz. mLab üzerinde barındırdığım kendi koleksiyonumda şunun gibi dökümanlar bulunuyor:</p>
+
+<pre><code>{
+  "id": "67968965",
+  "tr-TR": {
+    "title": "#name adındakileri her zaman eklemem.",
+    "description": "Ama eklediğimde listemde #number #name olur."
+  }
+}
+</code></pre>
+
+<p><code>67968965</code>, kendi kullanıcı hesabımla ImgFlip'e yüklediğim bir şablonun <code>id</code>'si; <code>title</code> ve <code>description</code> ise ImgFlip API'ı aracılığıyla bu şablondan oluşturulacak görselin üstünde ve altında yazmasını sağlayacağımız kısa cümlelerdir. <code>image-generator.js</code> kodu çalıştırılınca, bu cümlelerin içinde geçen <code>#name</code> ve <code>#number</code> yer tutucuları, kod içinde yürütme anında elde edilen değerlerle değiştiriliyor. ImgFlip REST arabirimine <code>POST</code> ettiğimiz data şu şekilde:</p>
+
+<p><code>helpers\image-generator.js</code></p>
+
+<pre><code>{
+  url: 'https://api.imgflip.com/caption_image',
+  form: {
+    template_id: template.id,
+    username: process.env.IMGFLIP_USERNAME,
+    password: process.env.IMGFLIP_PASSWORD,
+    boxes: [{
+      text: title,
+      x: 10,
+      y: 28,
+      width: 775,
+      height: 60
+    }, {
+      text: description,
+      x: 10,
+      y: 502,
+      width: 775,
+      height: 60
+    }]
+  }
+}
+</code></pre>
+
+<p>Kodda görebileceğiniz gibi, JSON olarak gönderdiğimiz data'nın içinde ImgFlip kullanıcı adı ve parolamızı açıkça belirtmemiz gerekiyor. ImgFlip hesabıma yüklediğim şablonlar 800x600 boyutunda olduğundan ve sadece bu şablonları kullandığım için <code>x</code>, <code>y</code>, <code>width</code> ve <code>height</code> değerlerini sabit verebiliyorum; ImgFlip'e başkaları tarafından yüklenen şablonları kullanmak isteseydim, görselin altına ve üstüne yazacağım her yazı için bu değerleri farklı vermem gerekecekti (<code>templates</code> koleksiyonundaki her dökümana ilgili değerleri ekleyerek bu işi kotarabiliriz ancak ben bu konuda hem biraz kolaya kaçtım hem de kendi görsellerimi kullanarak işimi sağlama aldım).</p>
+
+<p><code>POST</code> işlemi başarıyla gerçekleşirse ImgFlip tarafından oluşturulan görselin kendisinini ve içinde bulunduğu sayfanın URL'ini elde ediyoruz. Son olarak <code>image-generator</code> modülünü <code>controllers\friend-list.js</code> router'ı içinde aşağıdaki gibi kullandığımızı ekleyelim:</p>
+
+<p><code>var generator = require('../helpers/image-generator');</code></p>
+
+<p><code>...</code></p>
+
+<pre><code>generator.generate(
+  history.name,
+  history.number,
+  fnGenerate(friends, history, user)
+);
+</code></pre>
+
+<p><code>...</code></p>
+
+<pre><code>var fnGenerate = function (friends, history, user) {
+  return function (info) {
+    history.image = info.image;
+    history.title = info.title;
+    history.description = info.description;
+
+    user.save();
+
+    res.json({
+      info: info,
+      friends: friends,
+      url: req.protocol +
+      '://' + req.headers.host +
+      '/' + provider +
+      '/profile/' + req.user[provider].id +
+      '?uid=' + req.session.uid
+    });
+  }
+}
+</code></pre>
+
+<p>Yukarıdaki koddan da görebileceğiniz gibi ürettiğimiz görsele ait bilgiler, kullanıcıyla ilişkili <code>history</code> adındaki bir koleksiyona kaydediliyor ve ilgili dökümanın <code>uid</code> değeriyle -ki bu değer  <code>session</code> olarak da saklanıyor- oluşturulan URL, kullanıcının sayfadaki bir bağlantı aracılığıyla paylaşabilmesi için istemciye gönderiliyor.</p>
+
+<h4>
+<a id="5-kodlama-front-end" class="anchor" href="#5-kodlama-front-end" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5. Kodlama (Front-End)</h4>
+
+<p>Friendsake'in istemci arayüzünü Bootstrap ve JQuery ile tasarladım. Bootstrap teması olaraksa <strong><a href="http://bootswatch.com">Bootswatch</a></strong> sitesindeki ücretsiz temalar arasından <strong><a href="http://bootswatch.com/superhero">Superhero</a></strong>'yu tercih ettim. Front-end ile ilgili en önemli ayrıntı, statik kütüphanelerin geliştirme ortamında çalışırken <code>public</code> dizininden, production ortamında, yani Heroku uygulaması olarak çalışırken de kendi CDN sunucularından ya da <strong><a href="https://rawgit.com">RawGit</a></strong> ile GitHub üzerinden yüklenmesi. Bu yolu tercih etmemin nedeni, -her ne kadar Heroku'nun kendi caching mekanizması olduğunu düşünsem de- gereksiz trafikten kaçınmaktı; ücretsiz kaynakları idareli bir şekilde kullanmak için bu tarz çözümleri göz ardı etmemek gerekiyor. Bu işlem, CSS ve JavaScript gibi varlıkların tanımlandığı <code>views\layout.jade</code> dosyasında aşağıdaki gibi yapıldı:</p>
+
+<pre><code>if ENV_DEVELOPMENT
+  script(src='/components/jquery/dist/jquery.min.js')
+else
+  script(src='https://code.jquery.com/jquery-2.2.3.min.js')
+</code></pre>
+
+<p>Friendsake'in benim tarafımdan yazılmış front-end JavaScript kodları, <code>public\js\app.js</code> dosyasında duruyor. Her route için ayrı dosyalar oluşturup ilgili view'in <code>block js</code> kısmında sayfaya dahil etmektense, işimi tek bir dosyayla halletmeyi uygun gördüm. Aslında <code>app.js</code> istemci taraflı basit bir routing içeriyor; <strong><a href="https://github.com/visionmedia/page.js">Page</a></strong> adında, Express örnek alınarak geliştirilen bir router sayesinde sadece o an bulunulan sayfayla ilgili JavaScript kodlarının çalışmasını sağladım. Tüm sayfalarda ortak olan kodların yanında, sunucuya arkadaş listesi için <code>GET</code> talebinde bulunan JQuery kodu sadece <code>/facebook/friends</code> path'inde devreye giriyor. Page'in ilk parametresi <code>path</code>, ikinci parametresi <code>callback</code> fonksiyonumuz (<code>callback</code> içinde, Express'te olduğu gibi <code>next()</code> denilebiliyor, tüm sayfalarda yürütülmesi gereken <code>init()</code> fonksiyonunu bu şekilde çalıştırıyorum):</p>
+
+<pre><code>// friends() callback fonksiyonunu çağır
+page('/:provider/friends', friends);
+
+// friends() içindeki next() ile bu route devreye girecek
+page('*', init);
+</code></pre>
+
+<p><code>init</code> fonksiyonunun en önemli işlevi, <strong>Adobe</strong> ve <strong>Google</strong> tarafından geliştirilen <strong><a href="https://github.com/typekit/webfontloader">Web Font Loader</a></strong> kütüphanesi aracılığıyla <code>public\css\style.scss</code> içinde kullandığım <code>Fira Sans</code> ve <code>Lora</code> adlı yazı tiplerini <strong><a href="https://www.google.com/fonts">Google Fonts</a></strong>'tan yüklemesi; sunduğu ek kontroller ve paremetrik çalışma olanağıyla, özellikle arayüz tasarlanırken çok fazla web font kullanılması gereken durumlarda işe yarayacak bu özelliği, örnek olması açısından projeye dahil ettim. Web Font Loader ile kullanmak istediğiniz fonta ait JavaScript kodunu, fontun kendi sayfasından alabilirsiniz. Örneğin Google Fonts'un <strong><a href="https://www.google.com/fonts/#QuickUsePlace:quickUse/Family:Open+Sans">Open Sans</a></strong> sayfasında yer alan JavaScript kodu, işaretlediğiniz seçeneklere bağlı olarak şuna benzeyecektir:</p>
+
+<pre><code>WebFontConfig = {
+  google: { families: [ 'Open+Sans:300,300italic,600:latin,latin-ext' ] }
+};
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="sonuç" class="anchor" href="#sonu%C3%A7" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sonuç</h2>
+
+<p>Friendsake uygulaması, bu belgeyi hazırlamak için harcadığım iki günü de sayarsak, neredeyse 10 günlük bir çalışma sonucunda ortaya çıktı. Aslında şu an incelemekte olduğunuz, projenin ilk GitHub repo'su değil; <strong>README.md</strong> dosyasını yazmaya başlamadan önce orjinal repo'da 60'ın üzerinde commit bulunuyordu. Bu kadar küçük çapta bir proje için böylesine yoğun bir versiyon günlüğü paylaşmanın abartılı olacağını düşündüğüm için Git repo'sunu silip yeniden oluşturdum ancak kodları yazarken neden bu kadar çok commit'in ortaya çıktığını açıklamak istiyorum: Proje küçük olsa da içinde Express ile Node.js uygulaması geliştirmeye dair, MongoDB işlemleri, üçüncü parti API erişimi, yerelleştirme ve yetkilendirme gibi birçok bilgi ve veri barındırıyor. Her şeyden önce bu benim ilk Express projem; bundandır ki az önce bahsettiğim işlerin Node.js ile nasıl kotarılabileceğine dair az çok fikrim olmasına karşın konuyla ilgili neredeyse hiç deneyimim yoktu. Bununlar birlikte, titiz bir geliştirici olarak yazdığım kodun, her seferinde <em>aslında öyle yazılmaması gerektiğine</em> dair güçlü bir dürtüye sahip olduğum için kısacık kod bloklarını bile sürekli elden geçiriyor, farklı modüllere taşıyor, daha anlaşılır hale getirmeye çalışıyorum.</p>
+
+<p>Projenin eksikleri yok mu peki? Olmaz mı... İçime dert olan bazı noktaları gizlemeyeceğim. İlk olarak, projeyi "<strong>test driven</strong>" anlayışıyla geliştirmemenin tatminsizliğini yaşıyorum; uygulamayı debug ederken terminal'de aldığım loglar, olası hataların çoğunu önüme dökse de, birkaç test yazıp repo'ya eklemek ve bu belgede bundan biraz bahsetmek hiç fena olmazdı. Ayrıca belirtmem gerekir ki, Friendsake aslında bir <strong><a href="https://en.wikipedia.org/wiki/MEAN_(software_bundle)">MEAN Stack</a></strong> uygulaması olabilecekken, <strong><a href="https://angularjs.org">AngularJS</a></strong>'i projeye yediremediğim için bu fırsatı ucu ucuna kaçırdı. Neyse ki Express ile kurduğum MVC yapısı ve front-end'teki kodların son derece kısıtlı bir işleve sahip oluşu nedeniyle Angular'ın eksikliği projede pek hissedilmiyor.</p>
+
+<p>Buraya kadar okuyanlara teşekkürü borç bilirim.</p>
+
+<p>Peki siz bu belgede bahsettiğim konular hakkında ne düşünüyorsunuz? Friendsake'in kodlarını incelediniz mi? Sizce proje <code>fork</code> etmeye değer mi? Hem bu soruların yanıtını merak ediyor, hem de burada yazdıklarımla ilgili yeni soruların yöneltilmesini heyecanla bekliyorum. Bana aşağıdaki sosyal medya hesaplarından ulaşabilirsiniz. Hiçbir iletişim çağrısını karşılıksız bırakmıyorum; bu nedenle aklınıza ne gelirse gelsin lütfen benimle paylaşmaktan çekinmeyin.</p>
+
+<p>Sevgiler.</p>
+
+<p>Kemal E. Yılmaz</p>
+
+<p><a href="http://twitter.com/kemal_ersin"><img src="https://maxcdn.icons8.com/Android_L/PNG/24/Social_Networks/twitter-24.png" alt="Twitter"></a>
+<a href="http://www.facebook.com/kemalersinyilmaz"><img src="https://maxcdn.icons8.com/Android_L/PNG/24/Social_Networks/facebook-24.png" alt="Facebook"></a>
+<a href="http://plus.google.com/u/0/106180819527051679686"><img src="https://maxcdn.icons8.com/Android_L/PNG/24/Social_Networks/google_plus-24.png" alt="Google Plus"></a>
+<a href="http://www.linkedin.com/in/kemal-e-y%C4%B1lmaz-a00447120"><img src="https://maxcdn.icons8.com/Android_L/PNG/24/Social_Networks/linkedin-24.png" alt="LinkedIn"></a></p>
+        </section>
+
+        <footer>
+          Friendsake is maintained by <a href="https://github.com/kemalersin">kemalersin</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
