@@ -116,20 +116,20 @@
 <h2>
 <a id="hazırlık" class="anchor" href="#haz%C4%B1rl%C4%B1k" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hazırlık</h2>
 
-<h5>
-<a id="1-geliştirici-hesabının-ayarlanması" class="anchor" href="#1-geli%C5%9Ftirici-hesab%C4%B1n%C4%B1n-ayarlanmas%C4%B1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Geliştirici Hesabının Ayarlanması</h5>
+<h4>
+<a id="1-geliştirici-hesabının-ayarlanması" class="anchor" href="#1-geli%C5%9Ftirici-hesab%C4%B1n%C4%B1n-ayarlanmas%C4%B1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Geliştirici Hesabının Ayarlanması</h4>
 
 <p>Friendsake gibi kullanıcıların Facebook ile giriş yapabildikleri, izinler doğrultusunda kullanıcının Facebook profil bilgileri ve arkadaş listeleri gibi verilerine erişebilen uygulamaların önce Facebook'a tanımlanması gerekmektedir. Bunu Facebook Developer web sitesinde yapabilirsiniz. Kayıt işlemini gerçekleştirirken uygulamanın isim alanını, varsa site adresini ve çalışacağı alan adlarını belirtmek önemlidir. Uygulamayı genel kullanıma açana kadar sadece kendi yerel sunucunuzda çalıştırabileceğinizi de unutmayın. Facebook, uygulamayı tanımladığınızda size bir uygulama kodu (<strong>APP ID</strong>) ve uygulama gizi (<strong>APP KEY</strong>) verir. Bunları uygulamayı geliştirirken kullanacaksınız.</p>
 
-<h5>
-<a id="2-web-servislerinin-ayarlanması" class="anchor" href="#2-web-servislerinin-ayarlanmas%C4%B1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Web Servislerinin Ayarlanması</h5>
+<h4>
+<a id="2-web-servislerinin-ayarlanması" class="anchor" href="#2-web-servislerinin-ayarlanmas%C4%B1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Web Servislerinin Ayarlanması</h4>
 
 <p>Ben uygulamayı çevrimiçi kullanıma açmak için <strong>PaaS</strong> (Platform as a Service) olarak <strong><a href="http://www.heroku.com">Heroku</a></strong>'yu tercih ettim. Düşük erişim ve kullanım oranlarına sahip uygulamalar için Heroku'nun ücretsiz katmanı rahatlıkla kullanılabilir. Uygulamanıza olan talep artarsa farklı bir fiyatlandırma katmanına geçerek uygulamayı ölçeklendirip artan taleplere yanıt verecek şekilde uygulamanızın performansını arttırabilirsiniz. Yerel sunucumuzdaki dosyaların Heroku üzerinde yayınlayabilmek için birazdan bahsedeceğim <strong><a href="https://toolbelt.heroku.com">Heroku Toolbet</a></strong> denilen araç setini kullanıyoruz.</p>
 
 <p>Friendsake'te veritabanı sunucusu olarak <strong>MongoDB</strong> kullandım. Verileri saklamak için, en azından development ve test ortamında <strong>SQLite</strong> da kullanılabilir ancak ben hepsinde Mongo'yu tercih ettim. Tabii çevrimiçi olarak kullanılan bir uygulamanın veritabanı da çevrimiçi olmalı; bu amaçla DaaS (Database as a Service) olarak <strong><a href="https://mlab.com">mLab</a></strong>'te ücretsiz bir veritabanı oluşturdum (ücretsiz veritabanının boyutu en fazla <code>500 MB</code> olabiliyor; bununla birlikte Heroku'da olduğu gibi ücretli ölçeklendirme seçeneklerine sahipsiniz).</p>
 
-<h5>
-<a id="3-geliştirme-ortamının-hazırlanması" class="anchor" href="#3-geli%C5%9Ftirme-ortam%C4%B1n%C4%B1n-haz%C4%B1rlanmas%C4%B1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Geliştirme Ortamının Hazırlanması</h5>
+<h4>
+<a id="3-geliştirme-ortamının-hazırlanması" class="anchor" href="#3-geli%C5%9Ftirme-ortam%C4%B1n%C4%B1n-haz%C4%B1rlanmas%C4%B1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Geliştirme Ortamının Hazırlanması</h4>
 
 <p>Node.js'i kendi web sitesinden indirerek kurabileceğiniz gibi kurulumu Node.js için geliştirilmiş <strong><a href="https://github.com/creationix/nvm">NVM</a></strong> adlı araç yardımıyla da yapabilirsiniz. Bu aracın en güzel yanı, aynı geliştirme ortamına birden çok Node.js versiyonunu yükleyip sistem genelinde, oturum boyunca ya da sadece geliştirdiğiniz uygulama içinde istediğiniz versiyonu kullanabilmenizi sağlaması.</p>
 
