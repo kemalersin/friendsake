@@ -1,6 +1,7 @@
 node_modules/
 models/data/
 public/components
+public/img/meme
 .idea/
 .env
 .sass-cache
