@@ -21,11 +21,8 @@
   var friends = function (ctx, next) {
     $.get(ctx.path + '/list', function (data) {
       if (data) {
-        var info = data.info;
-        var url = encodeURI(data.url);
-
         var image = new Image();
-        image.src = info.image;
+        image.src = data.info.image;
 
         image.onload = function () {
           var $share = $('#share');
@@ -35,6 +32,8 @@
         }
 
         $('.btn-share').click(function () {
+          var url = encodeURI(data.url);
+
           switch (ctx.params.provider.toLowerCase()) {
             case 'facebook':
               FB.ui({
@@ -45,7 +44,7 @@
             case 'twitter':
               window.open(
                 'http://twitter.com/share?url=' + url +
-                '&text=' + info.title + ' ' + info.description,
+                '&text=' + data.info.title + ' ' + data.info.description,
                 'twitterwindow',
                 'width=600, height=300'
               );
