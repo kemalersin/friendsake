@@ -61,7 +61,7 @@
           ).appendTo($('.friend-list'));
 
           friends.users.forEach(function (user) {
-            $grouped.append(
+            var $avatar = $(
               '<div class="col-xs-3 col-sm-2 col-md-1 text-center">' +
               ' <img class="avatar lazy img-circle"' +
               '   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"' +
@@ -69,10 +69,10 @@
               '   data-toggle="tooltip" data-placement="top" title="' + user.name + '"' +
               ' />' +
               '</div>'
-            );
+            ).appendTo($grouped);
 
-            if (user.url) {
-              $grouped.find('img.avatar').wrap($('<a>', {
+            if (typeof user.url !== 'undefined') {
+              $avatar.find('img').wrap($('<a>', {
                 href: user.url,
                 target: '_blank'
               }));
