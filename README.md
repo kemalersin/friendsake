@@ -78,7 +78,7 @@ Friendsake, Express çatısıyla geliştirildi (üzerinde birkaç değişiklik y
 
 Çeşitli görevlerle proje dosyalarını derleyip uygulamamızı çalıştırmamızı sağlayan **[Gulp](http://gulpjs.com)** paketi de bu çatıyla birlikte yükleniyor; ben Friendsake'te Gulp kullanmış olsam da siz çatıyı oluştururken dilerseniz Gulp yerine **[Grunt](http://gruntjs.com)**'ı da seçebilirsiniz.
 
-Projelerimizde kullanacağımız, **[Bootstrap](http://getbootstrap.com)**, **[JQuery](https://jquery.com)** gibi statik kütüphaneleri, geliştirme kitlerini, kaynak dosyalarını ve istemci taraflı diğer araçları **[Bower](http://bower.io)** adlı komut satırı uygulamasıyla indirip bağımlılık olarak projemize ekliyoruz. Express çatısıyla projemize Node.js modülü olarak eklenen Bower'ın global kurulumunu aşağıdaki komutla gerçekleştirebilirsiniz :
+Projelerimizde kullanacağımız, **[Bootstrap](http://getbootstrap.com)**, **[JQuery](https://jquery.com)** gibi statik kütüphaneleri, geliştirme kitlerini, kaynak dosyalarını ve istemci taraflı diğer araçları **[Bower](http://bower.io)** adlı komut satırı uygulamasıyla indirip bağımlılık olarak projemize ekliyoruz. Express çatısıyla projemize Node.js modülü olarak eklenen Bower'ın global kurulumunu aşağıdaki komutla gerçekleştirebilirsiniz:
 
 `npm install -g bower`
 

@@ -5,9 +5,12 @@ var request = require('request');
 var random = require('randomstring');
 
 var User = require('../models/user');
+var configAuth = require('../config/auth');
 var generator = require('../helpers/image-generator');
 
 router.get('/:provider/friends/list', function (req, res, next) {
+  var cursor;
+  var result = [];
   var provider = _.lowerCase(req.params.provider);
 
   req.session.uid = random.generate(8);
@@ -54,15 +57,19 @@ router.get('/:provider/friends/list', function (req, res, next) {
     }
   }
 
-  var fnResponse = function (parse) {
+  var fnResponse = function (parse, cursorKey) {
     return function (error, response, body) {
-      var result = [];
-
       if (!error && response.statusCode == 200) {
         var obj = JSON.parse(body);
 
         if (obj) {
-          result = parse(obj);
+          result = _.concat(result, parse(obj));
+
+          if (!_.isUndefined(cursorKey) && _.hasIn(obj, cursorKey) && obj[cursorKey]) {
+            cursor = _.toString(obj[cursorKey]);
+            execute();
+            return;
+          }
         }
       }
 
@@ -105,8 +112,8 @@ router.get('/:provider/friends/list', function (req, res, next) {
     }
   }
 
-  var sendFriends = function (url, parse) {
-    request(url, fnResponse(parse));
+  var sendFriends = function (url, parse, cursorKey) {
+    request(url, fnResponse(parse, cursorKey));
   }
 
   var sendFBFriends = function () {
@@ -124,11 +131,43 @@ router.get('/:provider/friends/list', function (req, res, next) {
     );
   }
 
-  switch (provider) {
-    case 'facebook':
-      sendFBFriends();
-      break;
+  var sendTwitterFriends = function () {
+    sendFriends({
+        url: 'https://api.twitter.com/1.1/friends/list.json?screen_name=' + req.user.twitter.username +
+             '&skip_status=true&include_user_entities=false&count=200&cursor=' +
+             (_.isUndefined(cursor) ? '-1' : cursor),
+        oauth: {
+          consumer_key: configAuth.twitter.consumerKey,
+          consumer_secret: configAuth.twitter.consumerSecret,
+          token: req.user.twitter.token,
+          token_secret: req.user.twitter.tokenSecret
+        }
+      },
+      function (obj) {
+        return _.transform(obj.users, function (result, value) {
+          result.push({
+            name: value.name,
+            picture: value.profile_image_url,
+            url: 'https://www.twitter.com/' + value.screen_name
+          });
+        }, []);
+      },
+      'next_cursor'
+    );
   }
+
+  var execute = function () {
+    switch (provider) {
+      case 'facebook':
+        sendFBFriends();
+        break;
+      case 'twitter':
+        sendTwitterFriends();
+        break;
+    }
+  }
+
+  execute();
 });
 
 module.exports = router;

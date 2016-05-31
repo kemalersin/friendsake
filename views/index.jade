@@ -6,9 +6,13 @@ block content
     h1.header= __('welcome')
     p
       small= __('description')
-    a.btn.btn-social.btn-facebook(href="/auth/facebook")
-      span.fa.fa-facebook
-      = __('signIn')
+    div.btn-toolbar
+      a.btn.btn-social.btn-facebook(href="/auth/facebook")
+        span.fa.fa-facebook
+        = __('signInFB')
+      a.btn.btn-social.btn-twitter(href="/auth/twitter")
+        span.fa.fa-twitter
+        = __('signInTwitter')
   p
     small= __('legal')
   div.row &nbsp;

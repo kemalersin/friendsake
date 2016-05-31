@@ -21,8 +21,11 @@
   var friends = function (ctx, next) {
     $.get(ctx.path + '/list', function (data) {
       if (data) {
+        var info = data.info;
+        var url = encodeURI(data.url);
+
         var image = new Image();
-        image.src = data.info.image;
+        image.src = info.image;
 
         image.onload = function () {
           var $share = $('#share');
@@ -36,8 +39,16 @@
             case 'facebook':
               FB.ui({
                 method: 'share',
-                href: encodeURI(data.url)
+                href: url
               });
+              break;
+            case 'twitter':
+              window.open(
+                'http://twitter.com/share?url=' + url +
+                '&text=' + info.title + ' ' + info.description,
+                'twitterwindow',
+                'width=600, height=300'
+              );
               break;
           }
         });
@@ -59,6 +70,13 @@
               ' />' +
               '</div>'
             );
+
+            if (user.url) {
+              $grouped.find('img.avatar').wrap($('<a>', {
+                href: user.url,
+                target: '_blank'
+              }));
+            }
           });
         });
       }

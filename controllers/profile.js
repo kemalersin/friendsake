@@ -24,7 +24,7 @@ router.get('/:provider/profile/:id', function (req, res, next) {
           image: history.image,
           title: history.title,
           description: history.description,
-          fbAppId: process.env.FB_APP_ID,
+          fbAppId: process.env.FB_APP_ID
         });
       }
     });
