@@ -7,7 +7,11 @@ router.get('/:provider/profile/:id', function (req, res, next) {
   var uid = req.query.uid;
   var provider = _.lowerCase(req.params.provider);
 
-  User.findOne({ $where: 'this.' + provider + '.id == ' + req.params.id },
+  User.findOne({
+    $where:
+      'this.' + provider +
+      ' && this.' + provider + '.id == ' + req.params.id
+    },
     function (err, user) {
       var history = (err || !user) ? undefined :
         _.find(user.history, function(o) {
