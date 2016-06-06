@@ -12,65 +12,30 @@ router.get('/:provider/friends/list', function (req, res, next) {
 
   req.session.uid = random.generate(8);
 
-  var fnGenerate = function (friends, history, user) {
-    return function (info) {
-      history.image = info.image;
-      history.title = info.title;
-      history.description = info.description;
-
-      user.save();
-
-      res.json({
-        info: info,
-        friends: friends,
-        url: req.protocol +
-        '://' + req.headers.host +
-        '/' + provider +
-        '/profile/' + req.user[provider].id +
-        '?uid=' + req.session.uid
-      });
-    }
-  }
-
-  var fnUser = function (friends) {
-    return function (err, user) {
-      var mostCommon = _.head(friends);
-
-      var i = user.history.push({
-        uid: req.session.uid,
-        provider: provider,
-        name: mostCommon.name,
-        number: _.size(mostCommon.users),
-        createdAt: _.now()
-      });
-
-      var history = user.history[--i];
-
-      generator.generate(
-        history.name,
-        history.number,
-        fnGenerate(friends, history, user)
-      );
-    }
-  }
-
-  var fnResponse = function (parse) {
-    return function (error, response, body) {
-      var result = [];
-
-      if (!error && response.statusCode == 200) {
-        var obj = JSON.parse(body);
-
-        if (obj) {
-          result = parse(obj);
+  var sendFriends = function (url, parse) {
+    new Promise(function (resolve, reject) {
+      request(url, function (error, response, body) {
+        if (error) {
+          reject(error);
         }
-      }
+        else {
+          var result = [];
+          var obj = JSON.parse(body);
 
-      if (_.size(result) === 0) {
-        res.send(404);
-        return;
-      }
+          if (obj) {
+            result = parse(obj);
+          }
 
+          if (_.size(result) === 0) {
+            reject(__('notFound'));
+          }
+          else {
+            resolve(result);
+          }
+        }
+      });
+    })
+    .then(function (result) {
       var grouped = _.chain(result)
         .sortBy(function (friend) {
           return _.chain(friend.name).lowerCase().deburr();
@@ -91,7 +56,7 @@ router.get('/:provider/friends/list', function (req, res, next) {
         return _.size(obj.users) === 1;
       });
 
-      var friends = _.concat(
+      return _.concat(
         _.difference(grouped, singletons),
         [{
           name: __('onlyOne'),
@@ -100,13 +65,45 @@ router.get('/:provider/friends/list', function (req, res, next) {
           })
         }]
       );
+    })
+    .then(function (friends) {
+      User.findById(req.user.id, function (error, user) {
+        var mostCommon = _.head(friends);
 
-      User.findById(req.user.id, fnUser(friends));
-    }
-  }
+        user.history.push({
+          uid: req.session.uid,
+          provider: provider,
+          name: mostCommon.name,
+          number: _.size(mostCommon.users),
+          createdAt: _.now()
+        });
 
-  var sendFriends = function (url, parse) {
-    request(url, fnResponse(parse));
+        var history = user.history.pop();
+
+        generator
+          .generate(history.name, history.number)
+          .then(function (info) {
+            history.image = info.image;
+            history.title = info.title;
+            history.description = info.description;
+
+            user.save();
+
+            res.json({
+              info: info,
+              friends: friends,
+              url: req.protocol +
+              '://' + req.headers.host +
+              '/' + provider +
+              '/profile/' + req.user[provider].id +
+              '?uid=' + req.session.uid
+            });
+          });
+      });
+    })
+    .catch(function(error) {
+      res.status(500).send(error);
+    });
   }
 
   var sendFBFriends = function () {
