@@ -70,7 +70,7 @@ router.get('/:provider/friends/list', function (req, res, next) {
       User.findById(req.user.id, function (error, user) {
         var mostCommon = _.head(friends);
 
-        user.history.push({
+        var i = user.history.push({
           uid: req.session.uid,
           provider: provider,
           name: mostCommon.name,
@@ -78,7 +78,7 @@ router.get('/:provider/friends/list', function (req, res, next) {
           createdAt: _.now()
         });
 
-        var history = user.history.pop();
+        var history = user.history[--i];
 
         generator
           .generate(history.name, history.number)
