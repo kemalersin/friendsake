@@ -109,7 +109,7 @@ router.get('/:provider/friends/list', function (req, res, next) {
   var sendFBFriends = function () {
     sendFriends(
       'https://graph.facebook.com/v2.6/' + req.user.facebook.id +
-      '/invitable_friends?limit=5000&access_token=' + req.user.facebook.token,
+      '/taggable_friends?limit=5000&access_token=' + req.user.facebook.token,
       function (obj) {
         return _.transform(obj.data, function (result, value) {
           result.push({
